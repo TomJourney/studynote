@@ -35,7 +35,7 @@ char与varchar类型相似，但他们的存储与查询方式不同，在最大
 
 1. char类型与varchar类型列存储值的处理方法演示： 
 
-![image-20240331180128317](C:\Users\pacoson\AppData\Roaming\Typora\typora-user-images\image-20240331180128317.png)
+![image-20240331180128317](image//image-20240331180128317.png)
 
 补充：在没有使用严格sql模式下，第4行的值才能够正确插入； 如果开启了严格sql模式， 超过列长度的数据不能存储，而是报错；
 
