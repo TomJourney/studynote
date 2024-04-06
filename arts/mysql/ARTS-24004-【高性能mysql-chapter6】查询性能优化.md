@@ -80,7 +80,7 @@ explain查询执行计划的结果中，**type列反应了访问类型；
    5. eq_ref： 使用唯一索引扫描，如主键或唯一键；
    6. const/system： 常量查询； 
       1. system是const的特例，当查询的表只有一行时使用system； 
-2. <font color='red'>mysql使用如下3种方式应用where条件（从好到坏）：</font>
+2. <font color="red">mysql使用如下3种方式应用where条件（从好到坏）：</font>
    1. 索引中使用 where 过滤不匹配的记录；（在存储引擎层完成）； 
    2. 使用索引覆盖扫描（extra列中出现using index）返回记录；直接从索引中过滤不需要的记录并返回命中结果； （这是在mysql服务器完成的，但无需再回表查询）； 
    3. 从数据库表中反馈数据，然后过滤不满足条件的记录（extra列出现using where）；这是在mysql服务器完成，mysql先从数据库表读出记录然后过滤；  
