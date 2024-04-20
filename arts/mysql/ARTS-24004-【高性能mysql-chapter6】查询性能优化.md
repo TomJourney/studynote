@@ -348,18 +348,22 @@ readme：表数据量：film表-50w； actor表-50w； film_actor_rel表-10w；
 
 ### 【6.5.1】关联子查询 
 
-1. mysql的子查询实现非常糟糕； 最糟糕的一类是 查询是 where条件中包含 in子句的查询语句； 
+1. mysql的子查询实现非常糟糕； 最糟糕的一类是 查询是 where条件中包含<font color='red'> in子句的查询语句</font>； 
 
 2. 【例】查询某个演员参演过的所有电影信息（如下图所示，其中演员0420AAAID000099参演的电影有15000部）； 
 
    1. 执行顺序为： film_actor_rel_tbl，film_actor_rel_tbl作为临时表全表扫描， 最后查询film表； 
    2. 这种sql写法性能差，因为涉及到临时表，并对这个临时表做了全表扫描（预估成本为扫描42478个4k数据页）； 
 
-   ![image-20240420143110978](C:\Users\pacoson\AppData\Roaming\Typora\typora-user-images\image-20240420143110978.png)
+   ![image-20240420202724209](C:\Users\pacoson\AppData\Roaming\Typora\typora-user-images\image-20240420202724209.png)
 
 3. 如何优化该查询：
    1. 内连接：
    2. 使用exists：
+
+https://blog.csdn.net/PacosonSWJTU/article/details/138010148
+
+
 
 
 
