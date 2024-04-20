@@ -271,34 +271,38 @@ explain查询执行计划的结果中，type列反应了访问类型；
 
 
 
-##### 【6.4.3.2.4】关联查询优化器（多表关联顺序）
+##### 【6.4.3.2.4】关联查询优化器（多表关联查询的顺序）
+
+1. mysql优化器最重要的部分：关联查询优化； 它决定了多个表关联时的顺序； 
+   2. 多表关联时，可以有多种不同关联顺序来获得相同的执行结果；关联查询优化器可以通过评估不同顺序时的成本来选择一个代价最小的关联顺序； 
+
+**【例1】表关联1**
+
+根据mysql优化器选择的执行计划（关联顺序）进行表关联；
+
+关联顺序为： rel表， file表，actor表； 
+
+![image-20240420110944248](C:\Users\pacoson\AppData\Roaming\Typora\typora-user-images\image-20240420110944248.png)
 
 
 
+**【例2】表关联2**（通过 <font color='red'>**straight_join**</font> 强行指定关联顺序，即sql编写的连表顺序） 
+
+关联顺序为： file表， rel表，actor表； 
+
+![image-20240420111124860](C:\Users\pacoson\AppData\Roaming\Typora\typora-user-images\image-20240420111124860.png)
+
+【例3】使用mysql优化器与强行指定关联顺序的表关联成本对比
+
+![image-20240420112836413](C:\Users\pacoson\AppData\Roaming\Typora\typora-user-images\image-20240420112836413.png)
+
+补充： straight_join 仅适用于 inner_join， 强行指定表关联顺序，即先执行左表，再执行右表； 
+
+总结： mysql优化器的表关联成本更小，性能更优； 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+##### 【6.4.3.2.5】排序优化 
 
 
 
