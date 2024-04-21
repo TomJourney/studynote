@@ -207,13 +207,13 @@ explain查询执行计划的结果中，type列反应了访问类型；
    2. 查找某列最大值：只需要查询b-tree索引最左端的记录；
    3. （如果mysql使用了上述2种类型的优化， 在 explain中可以看到  select tables optimized away ，字面意思是，优化器已经从执行计划中移除了该表，用一个常数代替它）
 5. 预估并转化为常数表达式：当mysql 检测到一个表达式可以转换为常数的时候， 就会一直把这个表达式当做常数处理；
-   1.  ![image-20240414202622879](C:\Users\pacoson\AppData\Roaming\Typora\typora-user-images\image-20240414202622879.png)
+   1.  ![image-20240414202622879](image//image-20240414202622879.png)
 6. 覆盖索引扫描：当索引中的列包含查询需要的列时，mysql就可以使用索引返回需要的数据，而无需回表 ；
 7. 子查询优化：在某些情况下可以将子查询转换为一种效率更高的形式，从而减少多个查询多次对数据进行访问；
 8. 提前终止查询； 在发现已经 满足查询需求的时候，mysql总是能够立刻终止查询；
    1. 如 limit子句；  
    2. 当发现一个不成立的条件时，mysql可以立刻返回一个空结果；  （这个例子可以看到， 查询在优化阶段就终止了）
-      1. ![image-20240414202832664](C:\Users\pacoson\AppData\Roaming\Typora\typora-user-images\image-20240414202832664.png)
+      1. ![image-20240414202832664](image//image-20240414202832664.png)
 9. 等值传播：如果两个列的值通过等式关联，那么 mysql能够把其中一个列的where条件传递到另一个列上；（注意要等值关联才行）
 10. 列表 in() 的比较：<font color=red>mysql 将in() 列表中的数据先进行排序，然后通过二分查找的方式来确定列表中的值是否满足条件，这是一个 O(logn) 复杂度的操作， 等价转换为OR查询的复杂度为O(n) </font>；对于in列表中有大量取值的时候，mysql的处理速度会更快； 
     1. 对in子句中的元素进行二分查找，所以时间复杂度是O(logn)； 
@@ -238,7 +238,7 @@ explain查询执行计划的结果中，type列反应了访问类型；
 2. mysql关联执行的策略很简单： mysql对任何关联都执行<font color='red'>**嵌套循环关联**</font>操作；详情如下：
    1. 先从第1个表中取出单条数据；
    2. 然后再嵌套循环到下一个表中寻找匹配的行，依次下去，直到找到表中所有匹配的行为止；  
-   3. ![image-20240415222915722](C:\Users\pacoson\AppData\Roaming\Typora\typora-user-images\image-20240415222915722.png)
+   3. ![image-20240415222915722](image//image-20240415222915722.png)
 3. **嵌套循环关联查询步骤**：
    1. 查询外层表的数据行， 并构建外层表的迭代器；
    2. 遍历外层表迭代器，获取单个外层表数据行（<font color='red'>第1层循环</font>）；
@@ -250,7 +250,7 @@ explain查询执行计划的结果中，type列反应了访问类型；
 
 4. 左外关联查询的伪代码例子：
 
-![image-20240415223923895](C:\Users\pacoson\AppData\Roaming\Typora\typora-user-images\image-20240415223923895.png)
+![image-20240415223923895](image//image-20240415223923895.png)
 
 
 
@@ -267,7 +267,7 @@ explain查询执行计划的结果中，type列反应了访问类型；
    1. 执行 explain extended，再执行 show warnings ，就可以看到重构出的查询； 
 3. **mysql是嵌套循环关联查询方式：** mysql总是从一个表开始一直嵌套循环， 回溯完成所有表关联，是一颗左侧深度优先的树； 
 
-![image-20240415225301205](C:\Users\pacoson\AppData\Roaming\Typora\typora-user-images\image-20240415225301205.png)
+![image-20240415225301205](image//image-20240415225301205.png)
 
 
 
@@ -284,7 +284,7 @@ readme：表数据量：film表-50w； actor表-50w； film_actor_rel表-10w；
 
 关联顺序为： rel表， file表，actor表； 
 
-![image-20240420110944248](C:\Users\pacoson\AppData\Roaming\Typora\typora-user-images\image-20240420110944248.png)
+![image-20240420110944248](image//image-20240420110944248.png)
 
 
 
@@ -292,11 +292,11 @@ readme：表数据量：film表-50w； actor表-50w； film_actor_rel表-10w；
 
 关联顺序为： file表， rel表，actor表； 
 
-![image-20240420111124860](C:\Users\pacoson\AppData\Roaming\Typora\typora-user-images\image-20240420111124860.png)
+![image-20240420111124860](image//image-20240420111124860.png)
 
 【例3】使用mysql优化器与强行指定关联顺序的表关联成本对比
 
-![image-20240420112836413](C:\Users\pacoson\AppData\Roaming\Typora\typora-user-images\image-20240420112836413.png)
+![image-20240420112836413](image//image-20240420112836413.png)
 
 【总结】 mysql优化器的表关联成本更小，性能更优； 
 
@@ -355,7 +355,7 @@ readme：表数据量：film表-50w； actor表-50w； film_actor_rel表-10w；
    1. 执行顺序为： film_actor_rel_tbl，film_actor_rel_tbl作为临时表全表扫描， 最后查询film表； 
    2. 这种sql写法性能差，因为涉及到临时表，并对这个临时表做了全表扫描（预估成本为扫描42478个4k数据页）； 
 
-   ![image-20240420202724209](C:\Users\pacoson\AppData\Roaming\Typora\typora-user-images\image-20240420202724209.png)
+   ![image-20240420202724209](image//image-20240420202724209.png)
 
 3. 如何优化该查询：
    1. 内连接：
